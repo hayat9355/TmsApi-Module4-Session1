@@ -1,8 +1,3 @@
-using System.Collections.Generic;
-
-namespace TmsApi.Services;
-
-// --- The contract ---
 public interface IEnrollmentService
 {
     Task<EnrollmentRecord> EnrollAsync(string studentId, string courseCode);
@@ -11,7 +6,6 @@ public interface IEnrollmentService
     Task<bool> DeleteAsync(string id);
 }
 
-// --- The in-memory implementation ---
 public class EnrollmentService : IEnrollmentService
 {
     private readonly Dictionary<string, EnrollmentRecord> _store = new();
@@ -24,7 +18,6 @@ public class EnrollmentService : IEnrollmentService
 
     public Task<EnrollmentRecord> EnrollAsync(string studentId, string courseCode)
     {
-        // Exercise 4: duplicate check with LogWarning
         var existing = _store.Values
             .FirstOrDefault(e => e.StudentId == studentId && e.CourseCode == courseCode);
 
@@ -51,11 +44,8 @@ public class EnrollmentService : IEnrollmentService
     {
         _store.TryGetValue(id, out var record);
 
-        // Exercise 4: LogWarning when record not found
         if (record is null)
-        {
             _logger.LogWarning("Enrollment {EnrollmentId} not found", id);
-        }
 
         return Task.FromResult(record);
     }
@@ -70,7 +60,6 @@ public class EnrollmentService : IEnrollmentService
     {
         var removed = _store.Remove(id);
 
-        // Exercise 4: LogInformation on success, LogWarning on not found
         if (removed)
             _logger.LogInformation("Deleted enrollment {EnrollmentId}", id);
         else
@@ -80,7 +69,6 @@ public class EnrollmentService : IEnrollmentService
     }
 }
 
-// --- The data shape ---
 public record EnrollmentRecord(
     string Id,
     string StudentId,
