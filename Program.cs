@@ -45,8 +45,8 @@ var app = builder.Build();
 
 //  Session 3: Environment toggle 
 
-    app.MapOpenApi();
-    app.MapScalarApiReference();
+app.MapOpenApi();
+app.MapScalarApiReference();
 
 
 app.UseStatusCodePages();
